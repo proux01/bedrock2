@@ -101,11 +101,11 @@ Inductive stepping: Type :=.
 Definition ready{P: Prop} := P.
 
 (* heapletwise- and word-aware lia, successor of ZnWords *)
-Ltac hwlia := zify_hyps; puri_simpli_zify_hyps true; zify_goal; xlia zchecker.
+Ltac hwlia := zify_hyps; puri_simpli_zify_hyps true; zify_goal; mp_lia zchecker.
 
-Ltac2 Set bottom_up_simpl_sidecond_hook := fun _ => ltac1:(zify_goal; xlia zchecker).
+Ltac2 Set bottom_up_simpl_sidecond_hook := fun _ => ltac1:(zify_goal; mp_lia zchecker).
 
-Ltac word_lia_hook_for_split_merge ::= zify_goal; xlia zchecker.
+Ltac word_lia_hook_for_split_merge ::= zify_goal; mp_lia zchecker.
 
 Ltac intros_until_trace :=
   repeat lazymatch goal with
@@ -856,7 +856,7 @@ Ltac conclusion_shape_based_step logger :=
   | |- bool_expr_branches _ _ _ _ =>
       logger ltac:(fun _ => idtac "Splitting bool_expr_branches");
       eapply BoolSpec_expr_branches;
-      [ first [ eapply contradictory_branch; zify_goal; xlia zchecker
+      [ first [ eapply contradictory_branch; zify_goal; mp_lia zchecker
               | intro ] .. | ]
   | |- then_branch_marker ?G =>
       logger ltac:(fun _ => idtac "Starting `then` branch");
@@ -1005,7 +1005,7 @@ Ltac sidecond_step logger := first
         end;
         logger ltac:(fun _ => idtac "eexists")
       | (* tried first because it also solves some goals of shape (_ = _) and (_ /\ _) *)
-        zify_goal; xlia zchecker;
+        zify_goal; mp_lia zchecker;
         logger ltac:(fun _ => idtac "zify_goal; xlia zchecker")
       | safe_implication_step;
         logger ltac:(fun _ => idtac "safe_implication_step")
@@ -1187,7 +1187,7 @@ Ltac predicates_safe_to_cancel hypPred conclPred :=
       | array ?elem ?n2 ?vs2 => lazymatch hypPred with
                                 | array elem ?n1 ?vs1 =>
                                     assert_succeeds (idtac; assert (n1 = n2)
-                                                       by (zify_goal; xlia zchecker));
+                                                       by (zify_goal; mp_lia zchecker));
                                     tryif is_evar vs2 then unify vs1 vs2 else idtac
                                 end
       | sepapps nil => lazymatch hypPred with
@@ -1215,7 +1215,7 @@ Ltac is_safe_to_cancel hypClause goalClause :=
       | ?pred2 ?addr2 =>
           first [ constr_eq addr1 addr2
                 | assert_succeeds (idtac; assert (addr1 = addr2)
-                                     by (zify_goal; xlia zchecker)) ];
+                                     by (zify_goal; mp_lia zchecker)) ];
           predicates_safe_to_cancel pred1 pred2
       end
   end.

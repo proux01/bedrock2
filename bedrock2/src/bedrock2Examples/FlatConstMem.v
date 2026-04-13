@@ -312,9 +312,9 @@ Section WithParameters.
       repeat lift_head_let_in Happ; case Happ as (Happ&?H1l&?H2l);
       simplify_ZcstExpr;
       let eqn := type of Happ in
-      rewr ltac:(fun t => match t with
+      rewr_hyp_step ltac:(fun t => match t with
                           | eqn => fail 1
-                          | _ => constr:(Happ) end) in *;
+                          | _ => constr:(Happ) end) ltac:(fail);
       repeat match goal with Hsep : _ |- _ =>
         seprewrite_in_by sep_eq_of_list_word_at_app Hsep ltac:(
           try eassumption; try blia)

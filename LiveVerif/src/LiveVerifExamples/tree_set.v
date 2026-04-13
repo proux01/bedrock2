@@ -163,7 +163,7 @@ Ltac step_hook ::=
   | H: _ |= bst' _ _ ?p, E: ?p = /[0] |- _ =>
       assert_fails (has_evar H); eapply (invert_bst'_null E) in H
   | H: _ |= bst' _ _ ?p, E: \[?p] = 0 |- _ =>
-      eapply invert_bst'_null in H; [ | zify_goal; xlia zchecker ]
+      eapply invert_bst'_null in H; [ | zify_goal; mp_lia zchecker ]
   | H: _ |= bst' _ _ ?p, N: ?p <> /[0] |- _ =>
       assert_fails (has_evar H); eapply (invert_bst'_nonnull N) in H
   | H: ?addr <> /[0] |- context[bst' ?sk_evar _ ?addr] =>
@@ -187,16 +187,16 @@ Ltac step_hook ::=
       end
   | H: ?res = ?c1 /\ _ \/ ?res = ?c2 /\ _
     |- ?res = ?c1 /\ _ \/ ?res = ?c2 /\ _ =>
-      assert_succeeds (idtac; assert (c1 <> c2) by (zify_goal; xlia zchecker));
+      assert_succeeds (idtac; assert (c1 <> c2) by (zify_goal; mp_lia zchecker));
       destruct H; [left|right]
   | |- ?A \/ ?B =>
-      tryif (assert_succeeds (assert (~ A) by (zify_goal; xlia zchecker)))
+      tryif (assert_succeeds (assert (~ A) by (zify_goal; mp_lia zchecker)))
       then right else
-      tryif (assert_succeeds (assert (~ B) by (zify_goal; xlia zchecker)))
+      tryif (assert_succeeds (assert (~ B) by (zify_goal; mp_lia zchecker)))
       then left else fail
   | H1: ?x <= ?y, H2: ?y <= ?x, C: ?s ?x |- ?s ?y =>
-      (replace y with x by xlia zchecker); exact C
-  | H: _ \/ _ |- _ => decompose [and or] H; clear H; try (exfalso; xlia zchecker); []
+      (replace y with x by mp_lia zchecker); exact C
+  | H: _ \/ _ |- _ => decompose [and or] H; clear H; try (exfalso; mp_lia zchecker); []
   | |- _ => solve [auto 3 with nocore safe_core]
   end.
 

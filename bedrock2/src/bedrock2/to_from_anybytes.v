@@ -447,7 +447,7 @@ Create HintDb fillable.
 : fillable.
 
 #[export] Hint Extern 1 (fillable (array ?elem ?n) _) =>
-  eapply array_fillable; [ xlia zchecker | eauto with fillable ]
+  eapply array_fillable; [ mp_lia zchecker | eauto with fillable ]
 : fillable.
 
 #[export] Hint Extern 20 (contiguous ?p ?n) =>

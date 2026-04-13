@@ -241,7 +241,7 @@ Ltac debug_sidecond :=
   end;
   time "Zify.zify" Zify.zify;
   refine (@xlia _ _);
-  time "xlia zchecker" xlia zchecker.
+  time "xlia zchecker" mp_lia zchecker.
 
 Ltac bottom_up_simpl_sidecond_hook := lia. (* OR xlia zchecker if already zified *)
 

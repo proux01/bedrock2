@@ -7,9 +7,9 @@ Ltac standalone_solver_step :=
       (* from step_hook in tree_set: *)
       | lazymatch goal with
         | |- ?A \/ ?B =>
-            tryif (assert_succeeds (assert (~ A) by (zify_hyps; zify_goal; xlia zchecker)))
+            tryif (assert_succeeds (assert (~ A) by (zify_hyps; zify_goal; mp_lia zchecker)))
             then right else
-            tryif (assert_succeeds (assert (~ B) by (zify_hyps; zify_goal; xlia zchecker)))
+            tryif (assert_succeeds (assert (~ B) by (zify_hyps; zify_goal; mp_lia zchecker)))
             then left else fail
         end
       | solve [auto 4 with nocore safe_core]

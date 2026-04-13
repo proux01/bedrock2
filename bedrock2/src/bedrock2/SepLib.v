@@ -410,6 +410,6 @@ Require Import bedrock2.unzify.
 
 #[export] Hint Resolve array_nil_is_emp : is_emp.
 #[export] Hint Extern 1 (is_emp (array ?elem ?n ?xs ?a) _) =>
-  eapply (array_0_is_emp elem n xs a ltac:(zify_goal; xlia zchecker)) : is_emp.
+  eapply (array_0_is_emp elem n xs a ltac:(zify_goal; mp_lia zchecker)) : is_emp.
 #[export] Hint Extern 1 (is_emp (array ?elem ?n ? ?a) _) =>
-  eapply (anyval_array_0_is_emp elem n a ltac:(zify_goal; xlia zchecker)) : is_emp.
+  eapply (anyval_array_0_is_emp elem n a ltac:(zify_goal; mp_lia zchecker)) : is_emp.

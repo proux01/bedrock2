@@ -90,14 +90,14 @@ Derive strCmp SuchThat (fun_correct! strCmp) As strCmp_ok.                      
   [ | once (typeclasses eauto with purify) ];
   specialize (A \[p2' ^- p2_pre]); cbv beta in A;
   bottom_up_simpl_in_hyp A;
-  specialize (A ltac:(zify_hyps; zify_goal; xlia zchecker)).
+  specialize (A ltac:(zify_hyps; zify_goal; mp_lia zchecker)).
 
   let A := constr:(#array) in
   eapply purify_array_ith_elem in A;
   [ | once (typeclasses eauto with purify) ];
   specialize (A \[p1' ^- p1_pre]); cbv beta in A;
   bottom_up_simpl_in_hyp A;
-  specialize (A ltac:(zify_hyps; zify_goal; xlia zchecker)).
+  specialize (A ltac:(zify_hyps; zify_goal; mp_lia zchecker)).
 
   destr (\[p1' ^- p1_pre] =? len s1);
   destr (\[p2' ^- p2_pre] =? len s2);
@@ -162,7 +162,7 @@ Derive Strcmp SuchThat (fun_correct! Strcmp) As Strcmp_ok.                      
     repeat match goal with
            | H: with_mem _ (array _ _ _ _) |- _ =>
                eapply array1_to_elem' in H;
-               [ new_mem_hyp H | zify_goal; xlia zchecker ]
+               [ new_mem_hyp H | zify_goal; mp_lia zchecker ]
            end.
     bsimpl_in_hyps.
     steps.

@@ -787,7 +787,7 @@ Ltac clear_if_dup h :=
 
 Ltac do_clear_Z_hyp_if_derivable h :=
   let tp := type of h in
-  try (clear h; assert_succeeds (idtac; assert tp by xlia zchecker)).
+  try (clear h; assert_succeeds (idtac; assert tp by mp_lia zchecker)).
 
 Ltac don't_clear_Z_hyp_if_derivable h := idtac.
 
@@ -845,7 +845,7 @@ Require Import bedrock2.WordNotations. Local Open Scope word_scope.
 Section Tests.
   Local Set Ltac Backtrace.
 
-  Ltac rzify_lia := zify_hyps; zify_goal; xlia zchecker.
+  Ltac rzify_lia := zify_hyps; zify_goal; mp_lia zchecker.
 
   Goal forall (x y: Z), 0 <= x < y -> y < 2 ^ 32 -> x mod 2 ^ 32 < y mod 2 ^ 32.
   Proof. intros. rzify_lia. Succeed Qed. Abort.
@@ -867,7 +867,7 @@ Section Tests.
 
   Goal forall (a b: word),
       word.signed (a ^+ b) = word.signed (b ^+ a).
-  Proof. intros. zify_goal. xlia zchecker. Succeed Qed. Abort.
+  Proof. intros. zify_goal. mp_lia zchecker. Succeed Qed. Abort.
 
   Goal forall (a b c: word),
       word.signed (a ^+ b ^- c) = word.signed (word.opp c ^+ b ^+ a).
@@ -1052,7 +1052,7 @@ Section Tests.
       \[w] = \[if c then /[in1] else /[in2]] ->
       \[w] < 20.
   Proof.
-    intros. zify_hyps. zify_goal. Fail xlia zchecker.
+    intros. zify_hyps. zify_goal. Fail mp_lia zchecker.
   Abort.
 
   Goal forall (left0 right : word) (xs : list word),
